@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -m32 -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2
+CFLAGS = -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2
 .PHONY: all run test clean
 all: build/SwampOS.img
 build:
@@ -10,7 +10,7 @@ build/boot.bin: boot/boot.S | build
 build/kernel.elf: kernel/entry.S kernel/main.c linker.ld | build
 	$(CC) $(CFLAGS) -c kernel/entry.S -o build/entry.o
 	$(CC) $(CFLAGS) -c kernel/main.c -o build/main.o
-	ld -m elf_i386 -T linker.ld build/entry.o build/main.o -o $@
+	ld -m elf_x86_64 -T linker.ld build/entry.o build/main.o -o $@
 build/kernel.bin: build/kernel.elf
 	objcopy -O binary $< $@
 build/SwampOS.img: build/boot.bin build/kernel.bin
