@@ -1,24 +1,20 @@
-# SwampOS v0.2.0 — Onion
+# SwampOS v0.5.0 — SwampBox | Boundaries Have Layers
 
-**Security has layers.**
+**Experimental pre-release · x86_64 · BIOS · C / Assembly**
 
-![Release](https://img.shields.io/badge/RELEASE-0.2.0_ONION-315c43?style=for-the-badge)
-![Status](https://img.shields.io/badge/STAGE-EXPERIMENTAL-526b45?style=for-the-badge)
+SwampBox is the largest kernel architecture change since Onion: a firmware-aware physical frame allocator, fine-grained paging, distinct address spaces, ring transitions and a minimal default-deny syscall policy. The Donkey scheduler and earlier console capabilities remain.
 
-## What's new
-- ELF64 freestanding kernel and x86-64 long-mode transition code.
-- Initial three-level page-table setup with 2 MiB supervisor-only pages mapping the first 1 GiB.
-- CR0 write-protect enabled; explicit BSS initialization and 64-bit stack.
-- Existing serial/VGA shell and all five profile specifications retained.
+## Highlights
+- BIOS E820 map, reserved-range filtering, 4 KiB frames, 128 MiB managed-address ceiling.
+- RX kernel text, R/NX constants, RW/NX data; separate user roots, RX code, NX stack and unmapped guard.
+- GDT/TSS, IRETQ entry, interrupt `0x80`, console grants, bounded pointers, fault cleanup and timer watchdog.
+- Nine built-in guest checks; startup fails closed if a check fails.
+- Host stress tests, UBSan, strict QEMU CI gate, new local green SVG artwork and comprehensive English documentation.
 
-## Verification
-Clean compilation and static image checks passed. QEMU is unavailable in the build environment; boot and shell execution remain unverified.
-
-## Known limitations
-BIOS only; assumes long-mode-capable CPU. Initial mappings are writable and executable, not a hardened memory layout. No physical allocator, IDT, scheduler, Ring 3, sandbox, UEFI, encryption or application compatibility yet. RAW image, not ISO. Test only in a disposable VM.
+## Validation
+Host/static tests pass; QEMU not installed in the packaging environment. Guest enforcement and physical boot remain **unverified**. Do not treat this build as a production sandbox. See TEST-REPORT.md.
 
 ## Assets
-- SwampOS-Onion.zip — source and build output
-- SwampOS-Onion.img — experimental RAW image
+One complete ZIP: source, raw image, ELF, hashes, local SVGs, README, changelog, release notes, profiles, docs and tests. Run `make test` and `make runtime` before relying on the image.
 
-**Your system. Your rules. Your swamp.**
+**Security has layers. Now they have boundaries.**
