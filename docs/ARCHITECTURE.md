@@ -13,3 +13,6 @@
 
 ## Next gates
 Long mode and UEFI; physical/virtual memory; IDT and timer; ring 3 and syscall isolation; storage and verified login; network and drivers; compatibility; desktop and application ports. Each gate requires runtime tests. No production security claims before audit.
+
+## 0.5.0 implementation delta
+E820 collection, capped physical allocator, 4 KiB page tables, kernel segment permissions, separate user roots, TSS, Ring 3 test payloads, syscall gate, limited capability checks and watchdog are now in source. Host validation passed; guest execution is pending. See ABI.md and SECURITY.md for exact boundaries. The target architecture above is retained, not a claim that the remaining systems work.

@@ -14,8 +14,36 @@ _start:
  mov $0x42,%ah
  int $0x13
  jc fail
+ # BIOS E820 map: count at 0x4ff0, entries at 0x5000, 24-byte stride.
+ xor %ax,%ax
+ mov %ax,%es
+ movw $0,0x4ff0
+ xor %ebx,%ebx
+ mov $0x5000,%di
+e820:
+ movl $1,20(%di)
+ mov $0xe820,%eax
+ mov $0x534d4150,%edx
+ mov $24,%ecx
+ int $0x15
+ jc e820_end
+ cmp $0x534d4150,%eax
+ jne fail
+ cmp $20,%ecx
+ jb fail
+ incw 0x4ff0
+ add $24,%di
+ test %ebx,%ebx
+ jz e820_end
+ cmpw $64,0x4ff0
+ jae fail
+ jmp e820
+e820_end:
+ cmpw $0,0x4ff0
+ je fail
  cli
  in $0x92,%al
+ and $0xfe,%al
  or $2,%al
  out %al,$0x92
  lgdt gdtptr

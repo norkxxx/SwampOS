@@ -1,0 +1,4 @@
+python3 tests/boot.py
+NOT RUN: qemu-system-x86_64 is not installed
+make: *** [Makefile:33: runtime] Error 1
+Exit code: 2

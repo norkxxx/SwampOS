@@ -1,0 +1,30 @@
+mkdir -p build
+as --32 boot/boot.S -o build/boot.o
+ld -m elf_i386 -Ttext 0x7c00 --oformat binary build/boot.o -o build/boot.bin
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/core.c -o build/core.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/main.c -o build/main.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/pmm.c -o build/pmm.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/policy.c -o build/policy.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/ranges.c -o build/ranges.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/task.c -o build/task.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/user.c -o build/user.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/vm.c -o build/vm.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/entry.S -o build/entry.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/interrupts.S -o build/interrupts.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/task_switch.S -o build/task_switch.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/user_enter.S -o build/user_enter.o
+gcc -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2 -c kernel/user_program.S -o build/user_program.o
+ld -m elf_x86_64 -T linker.ld build/core.o build/main.o build/pmm.o build/policy.o build/ranges.o build/task.o build/user.o build/vm.o build/entry.o build/interrupts.o build/task_switch.o build/user_enter.o build/user_program.o -o build/kernel.elf
+objcopy -O binary build/kernel.elf build/kernel.bin
+python3 scripts/image.py
+python3 tests/test_image.py
+PASS: image geometry, payload, ELF64 entry, RX/R/RW segments, no unresolved symbols, marker presence (static only)
+gcc -O2 -Wall -Wextra -Werror -mno-red-zone -Ikernel tests/task_host.c kernel/task.c kernel/task_switch.S -o build/task_host
+./build/task_host
+PASS: 1000 cooperative scheduler runs on host
+gcc -O2 -Wall -Wextra -Werror -fsanitize=undefined -Ikernel tests/pmm_host.c kernel/pmm.c kernel/ranges.c kernel/policy.c -o build/pmm_host
+./build/pmm_host
+PASS: physical frame exhaustion/reuse, E820 overlap/reservation, 100000 churn iterations, user pointer boundaries and default-deny policy (UBSan)
+gcc -O2 -Wall -Wextra -Werror -fsanitize=undefined -DVM_HOST -Ikernel tests/vm_host.c kernel/vm.c kernel/pmm.c kernel/ranges.c -o build/vm_host
+./build/vm_host
+PASS: actual page-table construction, W^X/NX flags, supervisor branch, guard, 1000 address-space cycles, OOM rollback (host simulation, UBSan)
