@@ -1,0 +1,4 @@
+profile = "full"
+status = "planned"
+
+includes = ["desktop", "defence", "developer", "privacy"]
