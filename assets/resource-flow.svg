@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 260" role="img" aria-label="Selected resource flow">
+<rect width="1000" height="260" rx="12" fill="#08130d"/>
+<g fill="#173624" stroke="#548d72" stroke-width="2"><rect x="35" y="72" width="260" height="90" rx="8"/><rect x="370" y="72" width="260" height="90" rx="8"/><rect x="705" y="72" width="260" height="90" rx="8"/></g>
+<g font-family="monospace" fill="#b2e3bf" text-anchor="middle"><text x="500" y="34" font-size="20">ONION // EXPLICIT RESOURCE FLOW</text><text x="165" y="109" font-size="18">RAMFS / EXT4</text><text x="165" y="137" font-size="14">one selected file</text><text x="500" y="109" font-size="18">KERNEL SNAPSHOT</text><text x="500" y="137" font-size="14">up to 64 KiB / read only</text><text x="835" y="109" font-size="18">RING 3 CLIENT</text><text x="835" y="137" font-size="14">256-byte bounded reads</text><text x="500" y="218" font-size="16">DEFAULT DENY / CAP_DATA / SCRUB ON RETURN</text></g>
+<path d="M295 117H370l-12-7m12 7-12 7M630 117H705l-12-7m12 7-12 7" fill="none" stroke="#9bd6a7" stroke-width="2"/>
+</svg>

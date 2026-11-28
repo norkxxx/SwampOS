@@ -1,0 +1,20 @@
+SWAMPOS LIVE IMAGE REPORT
+=========================
+ISO: SwampOS-Awakens-dev38-r1-Live.iso
+SHA256: 2558f4083259eada94a59bf9a7243f62888f2b2cc021987a193854ad53dc641d
+
+Component sizes:
+  Kernel binary             122,896 bytes (   0.12 MiB)
+  Kernel ELF                152,888 bytes (   0.15 MiB)
+  EXT4 payload            8,388,608 bytes (   8.00 MiB)
+  EFI application         8,523,264 bytes (   8.13 MiB)
+  Optical FAT16           9,328,640 bytes (   8.90 MiB)
+  USB FAT32              34,603,008 bytes (  33.00 MiB)
+  Hybrid Live ISO        44,980,224 bytes (  42.90 MiB)
+
+Embedded volume utilization (EFI file allocation only):
+  Optical FAT16: 8,523,264 / 9,049,600 data bytes (94.18%), volume 8.90 MiB
+  USB FAT32    : 8,523,264 / 34,054,144 data bytes (25.03%), volume 33.00 MiB
+
+Note: reported free space excludes filesystem metadata and directory clusters.
+The USB volume follows FAT32 minimum-cluster requirements and grows with payload demand.

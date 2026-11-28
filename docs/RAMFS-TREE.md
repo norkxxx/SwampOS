@@ -1,0 +1,7 @@
+# RAMFS directory hierarchy
+
+The existing volatile store now has a root namespace, 16 explicit directory entries and 16 file entries. Each file retains its 4 KiB payload. Directory names use the same canonical relative path grammar as files: total path <= 95 bytes, <= 8 components, each 1–31 bytes, ASCII letters/digits/underscore/hyphen, with dots permitted only after the first character in a component. No leading/trailing slash, repeated slash, backslash, dot or dot-dot component. Root is represented internally by an empty directory path; the shell accepts `ramls /` to list it. File APIs never accept root as a file name.
+
+A parent must already exist. Directory/file collisions are rejected. File writes replace existing file contents, copies/renames do not overwrite existing destinations. `ramrmdir` refuses nonempty directories, with no recursive removal. File and directory capacity are independent. `ramls` retains its existing all-files behavior, and `ramls <dir>` lists direct children with full relative paths. `ramdirs` lists all directory paths. Notes and Paint still use their original root file names. The graphical RAM Files/Hex browser shows files using their full relative paths, subject to the available display width; directory creation/removal remains a shell operation.
+
+No physical block I/O, native file syscalls, filesystem journaling, or persistent storage is introduced. There is no directory move API yet. The implementation is single-threaded kernel state; concurrent syscall access will require serialization and per-app authorization.

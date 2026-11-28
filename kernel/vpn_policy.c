@@ -1,0 +1,3 @@
+#include "vpn_policy.h"
+enum vpn_path vpn_decide(const struct vpn_state*s,enum vpn_mode m,int granted){if(!s||granted!=1||s->tunnel_ready>1||s->kill_switch>1)return VPN_DROP;switch(m){case VPN_REQUIRED:return s->tunnel_ready?VPN_TUNNEL:VPN_DROP;case VPN_DIRECT:return s->kill_switch?VPN_DROP:VPN_BYPASS;default:return VPN_DROP;}}
+int vpn_selftest(void){struct vpn_state s={0,1};if(vpn_decide(&s,VPN_REQUIRED,1)!=VPN_DROP||vpn_decide(&s,VPN_DIRECT,1)!=VPN_DROP)return 0;s.tunnel_ready=1;return vpn_decide(&s,VPN_REQUIRED,1)==VPN_TUNNEL&&vpn_decide(&s,VPN_REQUIRED,0)==VPN_DROP&&vpn_decide(&s,VPN_DIRECT,1)==VPN_DROP;}

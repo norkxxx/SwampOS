@@ -4,3 +4,5 @@ int user_readable(uint64_t a,size_t n){
  return (a>=USER_CODE&&a<USER_CODE+4096&&n<=USER_CODE+4096-a)||
         (a>=USER_STACK&&a<USER_TOP&&n<=USER_TOP-a);
 }
+
+int user_writable(uint64_t a,size_t n){return n&&n<=256&&a>=USER_STACK&&a<USER_TOP&&n<=USER_TOP-a;}
