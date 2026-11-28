@@ -24,7 +24,7 @@ def record(generation, message):
 
 def arguments(disk, controller, var_store, opt_in, iommu, serial):
     optical = "if=ide,media=cdrom,format=raw,readonly=on,file=build/Farkuad-Live.iso"
-    args = ["qemu-system-x86_64", "-machine", "q35,smm=on", "-cpu", "qemu64", "-m", "128M",
+    args = ["qemu-system-x86_64", "-machine", "pc-q35-8.2,smm=on", "-cpu", "qemu64", "-m", "128M",
             *drives(str(var_store), explicit_secure_boot=True), "-drive", optical, "-boot", "d",
             "-drive", f"if=none,id=fixture,format=raw,file={disk},cache=writeback",
             "-nic", "none", "-display", "none", "-serial", "stdio", "-monitor", "none", "-no-reboot"]

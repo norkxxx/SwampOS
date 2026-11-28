@@ -20,6 +20,7 @@ with tempfile.TemporaryDirectory() as td:
  for suffix in ('.in','.out'):os.mkfifo(qmp_path+suffix)
  cmd=[q,'-machine','q35,smm=on','-cpu','qemu64','-m','256M',*drives(f'farkuad-{mode}-vars.fd',explicit_secure_boot=True),*media,'-nic','none','-display','none','-serial','stdio','-monitor','none','-qmp',f'pipe:{qmp_path}','-no-reboot','-no-shutdown']
  if profile=='iommu':
+  cmd[cmd.index('-machine')+1]='pc-q35-8.2,smm=on'
   cmd[cmd.index('-m')+1]='128M'
   cmd.extend(['-device','intel-iommu'])
  log=bytearray()

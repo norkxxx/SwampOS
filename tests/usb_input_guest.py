@@ -56,7 +56,7 @@ def run(kind,interactive=False):
             os.mkfifo(str(prefix) + suffix)
         log = bytearray()
         device = "usb-mouse" if kind == "mouse" else "usb-kbd"
-        args = ["qemu-system-x86_64", "-machine", "q35,smm=on,i8042=off",
+        args = ["qemu-system-x86_64", "-machine", "pc-q35-8.2,smm=on,i8042=off",
                 "-cpu", "qemu64", "-m", "128M", *drives(str(Path(temp,"VARS.fd")), explicit_secure_boot=True),
                 "-drive", "if=ide,media=cdrom,format=raw,readonly=on,file=build/Farkuad-Live.iso",
                 "-boot", "d", "-device", "qemu-xhci,id=hci", "-device", device+",id=hid,bus=hci.0,port=1",

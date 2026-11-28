@@ -4,7 +4,8 @@ from pathlib import Path
 from ovmf_config import drives
 q=shutil.which('qemu-system-x86_64')
 if not q:raise SystemExit('NOT RUN: QEMU missing')
-cmd=[q,'-machine','q35,smm=on','-cpu','qemu64','-m','128M',*drives('kernel-lab-vars.fd',explicit_secure_boot=True),'-drive','if=ide,index=0,format=raw,file=build/KernelLab-GPT.img,snapshot=on','-drive','if=ide,index=2,format=raw,file=build/vault.ext4,snapshot=on','-nic','none','-display','none','-serial','stdio','-monitor','none','-no-reboot','-no-shutdown']
+# The firmware must leave the kernel's fixed low-memory reservation available.
+cmd=[q,'-machine','q35,smm=on','-cpu','qemu64','-m','256M',*drives('kernel-lab-vars.fd',explicit_secure_boot=True),'-drive','if=ide,index=0,format=raw,file=build/KernelLab-GPT.img,snapshot=on','-drive','if=ide,index=2,format=raw,file=build/vault.ext4,snapshot=on','-nic','none','-display','none','-serial','stdio','-monitor','none','-no-reboot','-no-shutdown']
 log=bytearray()
 with subprocess.Popen(cmd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT) as p:
  def wait(marker,start=0):

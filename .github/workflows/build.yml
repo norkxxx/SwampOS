@@ -27,6 +27,7 @@ jobs:
       - run: make live-optical-runtime
         if: always()
       - run: make live-storage-runtime
+        if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:

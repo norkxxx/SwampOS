@@ -11,7 +11,7 @@ The x64 hybrid UEFI Live ISO contains 44,980,224 bytes. SHA-256 `2558f4083259ead
 | Regression | Aggregate host tests, optical and USB-media Live boots, locked UEFI manager and paired xHCI input passed. |
 | Packaging | Retained historical archive paths and logs. Protected EFI and GPT hashes matched Build 37. The extracted component and deliverable SHA-256 manifests matched. |
 
-Revision 1 adds host coverage for a 1,024-entry VirtIO split ring. The guest exchanged ARP and ICMP packets over an isolated QEMU link, then shut the device down. The BIOS shell, UEFI kernel lab, protected manager, storage lab, GUI framebuffer, Live desktop and USB pair also passed locally. Revision 1 logs use the prefix `build/logs/build38-r1-`. The original Build 38 logs remain in the archive. The automated tests used headless QEMU. Physical hardware, VirtualBox storage and the GTK storage launcher window were not tested.
+Revision 1 adds host coverage for a 1,024-entry VirtIO split ring. The guest exchanged ARP and ICMP packets over an isolated QEMU link, then shut the device down. The BIOS shell, UEFI kernel lab, protected manager, storage lab, GUI framebuffer, Live desktop and USB pair also passed locally. The independent KernelLab GPT guest booted with 256 MiB on Ubuntu QEMU 10.2.1 and OVMF 2025.11. All fourteen storage boots, the USB input pair and the IOMMU probe passed on the Ubuntu packages with the versioned pc-q35-8.2 machine and 128 MiB. Revision 1 logs use the prefix `build/logs/build38-r1-`. The original Build 38 logs remain in the archive. The automated tests used headless QEMU. Physical hardware, VirtualBox storage and the GTK storage launcher window were not tested.
 
 ## Commit from the integrated checkout
 

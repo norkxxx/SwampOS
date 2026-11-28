@@ -335,6 +335,12 @@ SwampOS-Farkuad/
   build/logs/build38-r1-storage-nvme-write-serial.log
   build/logs/build38-r1-storage-nvme-wrong-label-serial.log
   build/logs/build38-r1-storage-nvme-wrong-serial-serial.log
+  build/logs/build38-r1-ubuntu-ahci.log
+  build/logs/build38-r1-ubuntu-iommu.log
+  build/logs/build38-r1-ubuntu-kernellab-serial.log
+  build/logs/build38-r1-ubuntu-kernellab.log
+  build/logs/build38-r1-ubuntu-nvme.log
+  build/logs/build38-r1-ubuntu-usb.log
   build/logs/build38-r1-usb-pair-serial.log
   build/logs/build38-regression.log
   build/logs/build38-storage-ahci-cold-boot-serial.log
