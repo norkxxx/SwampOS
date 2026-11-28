@@ -49,6 +49,41 @@ user_enter:
  xor %r14d,%r14d
  xor %r15d,%r15d
  iretq
+# Resume a trusted kernel-owned struct trap_frame; offsets checked in user.c.
+.global user_resume
+user_resume:
+ cli
+ push %rbp
+ push %rbx
+ push %r12
+ push %r13
+ push %r14
+ push %r15
+ mov %rsp,saved_rsp(%rip)
+ pushq 168(%rdi)
+ pushq 160(%rdi)
+ pushq 152(%rdi)
+ pushq 144(%rdi)
+ pushq 136(%rdi)
+ mov $0x23,%ax
+ mov %ax,%ds
+ mov %ax,%es
+ mov 0(%rdi),%r15
+ mov 8(%rdi),%r14
+ mov 16(%rdi),%r13
+ mov 24(%rdi),%r12
+ mov 32(%rdi),%r11
+ mov 40(%rdi),%r10
+ mov 48(%rdi),%r9
+ mov 56(%rdi),%r8
+ mov 72(%rdi),%rsi
+ mov 80(%rdi),%rbp
+ mov 88(%rdi),%rbx
+ mov 96(%rdi),%rdx
+ mov 104(%rdi),%rcx
+ mov 112(%rdi),%rax
+ mov 64(%rdi),%rdi
+ iretq
 user_escape:
  cli
  cld

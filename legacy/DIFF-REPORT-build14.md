@@ -1,0 +1,120 @@
+# Checkpoint delta against Farkuad 0.13.1
+
+Baseline source/docs paths: 246; checkpoint: 318. Build products and generated reports excluded.
+
+Added: 72; changed: 34; removed: 0.
+
+## Added
+- `FEATURES.md`
+- `HANDOFF.md`
+- `MISSING.md`
+- `applications/system/tools.c`
+- `applications/system/tools.h`
+- `assets/awakens-banner.svg`
+- `assets/awakens-guard.png`
+- `assets/awakens-preview.png`
+- `assets/awakens-tools.png`
+- `assets/resource-flow.svg`
+- `boot/layout.inc`
+- `desktop/window.c`
+- `desktop/window.h`
+- `docs/ATA-PIO.md`
+- `docs/AWAKENS.md`
+- `docs/DESKTOP-TOOLS.md`
+- `docs/GUARD-CEILINGS.md`
+- `docs/GUARD-EDITOR.md`
+- `docs/GUI-ASYNC.md`
+- `docs/GUI-CLIENT.md`
+- `docs/RAMFS-TREE.md`
+- `docs/RAMFS-VOLUME.md`
+- `docs/RESOURCE-GRANTS.md`
+- `docs/USB-RTC.md`
+- `docs/VM-ACCEPTANCE.md`
+- `drivers/rtc/rtc.c`
+- `drivers/rtc/rtc.h`
+- `drivers/storage/ata/pio.c`
+- `drivers/storage/ata/pio.h`
+- `drivers/usb/hid/boot_hid.c`
+- `drivers/usb/hid/boot_hid.h`
+- `filesystem/ramfs/import.c`
+- `filesystem/ramfs/import.h`
+- `filesystem/ramfs/ramfs.c`
+- `filesystem/ramfs/ramfs.h`
+- `kernel/guard.c`
+- `kernel/guard.h`
+- `kernel/guard_ui.c`
+- `kernel/guard_ui.h`
+- `kernel/lineedit.c`
+- `kernel/lineedit.h`
+- `kernel/ramfs_shell.c`
+- `legacy/README-0.13.1.md`
+- `legacy/README-awakens-build01.md`
+- `legacy/README-awakens-build02.md`
+- `legacy/RELEASE-0.13.1.md`
+- `legacy/RELEASE-awakens-build01.md`
+- `legacy/RELEASE-awakens-build02.md`
+- `legacy/TEST-REPORT-0.13.1.md`
+- `legacy/TEST-REPORT-awakens-build01.md`
+- `legacy/TEST-REPORT-awakens-build02.md`
+- `scripts/boot_layout.py`
+- `scripts/checkpoint-report.py`
+- `security/onion/resource.c`
+- `security/onion/resource.h`
+- `tests/ata_host.c`
+- `tests/bios_layout_host.py`
+- `tests/guard_host.c`
+- `tests/gui_async_host.c`
+- `tests/gui_client_host.c`
+- `tests/lineedit_host.c`
+- `tests/ramfs_host.c`
+- `tests/ramfs_volume_host.c`
+- `tests/ramtree_host.c`
+- `tests/resource_host.c`
+- `tests/resource_mock/swamp.h`
+- `tests/resource_scan_host.c`
+- `tests/tools_host.c`
+- `tests/usb_rtc_host.c`
+- `tests/window_host.c`
+- `userspace/gui_demo.c`
+- `userspace/resource_scan.c`
+
+## Changed
+- `CHANGELOG.md`
+- `Makefile`
+- `README.md`
+- `RELEASE.md`
+- `TEST-REPORT.md`
+- `boot/boot.S`
+- `boot/uefi/live_menu.h`
+- `docs/ABI.md`
+- `docs/ARCHITECTURE.md`
+- `docs/BOOT.md`
+- `docs/INPUT.md`
+- `docs/LIVE.md`
+- `kernel/ata.c`
+- `kernel/desktop.c`
+- `kernel/device.c`
+- `kernel/device.h`
+- `kernel/keyboard.c`
+- `kernel/main.c`
+- `kernel/policy.c`
+- `kernel/policy.h`
+- `kernel/session.c`
+- `kernel/session.h`
+- `kernel/storage.c`
+- `kernel/storage.h`
+- `kernel/user.c`
+- `kernel/user.h`
+- `kernel/user_enter.S`
+- `scripts/image.py`
+- `sdk/include/swamp.h`
+- `tests/integration_host.c`
+- `tests/integration_host.py`
+- `tests/live_boot.py`
+- `tests/test_image.py`
+- `tools/mkvolume.c`
+
+## Removed
+None
+
+Path retention is not a functional equivalence proof; see TEST-REPORT.md.

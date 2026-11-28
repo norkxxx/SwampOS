@@ -1,0 +1,62 @@
+name: SwampOS build and runtime gates
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - run: sudo apt-get update && sudo apt-get install -y gcc binutils make python3 qemu-system-x86 libext2fs-dev python3-cryptography clang lld ovmf
+      - run: python3 scripts/check-git-index.py
+      - run: make clean
+      - run: make test
+      - run: make runtime
+      - run: make uefi-runtime
+        if: always()
+      - run: make kernel-lab-runtime
+        if: always()
+      - run: make storage-lab-runtime
+        if: always()
+      - run: make network-lab-runtime
+        if: always()
+      - run: make gui-lab-runtime
+        if: always()
+      - run: make live-runtime
+        if: always()
+      - run: make live-optical-runtime
+        if: always()
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: SwampOS-build-and-logs
+          path: |
+            build/SwampOS.img
+            build/kernel.elf
+            build/vault.ext4
+            build/hello.elf
+            build/SwampBoot-GPT.img
+            build/BOOTX64.EFI
+            build/BOOTLAB.EFI
+            build/LOGIN.EFI
+            build/qemu.log
+            build/ovmf.log
+            build/KernelLab-GPT.img
+            build/StorageLab-GPT.img
+            build/KERNELLAB.EFI
+            build/kernel-lab.log
+            build/storage-lab.log
+            build/network-lab.log
+            build/GuiLab-GPT.img
+            build/GUILAB.EFI
+            build/sdk-demo.elf
+            build/integration-demo.elf
+            build/overlord-demo.elf
+            build/gui-preview.ppm
+            build/gui-guest.ppm
+            build/gui-lab.log
+            build/Farkuad-Live.iso
+            build/FARKUAD.EFI
+            build/Farkuad-Live.iso.sha256
+            build/farkuad-*-guest.log
+            build/farkuad-*-guest-*.ppm

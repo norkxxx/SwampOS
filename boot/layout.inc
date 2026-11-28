@@ -1,0 +1,9 @@
+/* Shared legacy BIOS loader layout. Python validation reads these literals. */
+.equ BIOS_SECTOR_BYTES, 512
+.equ BIOS_READ_SECTORS, 64
+.equ BIOS_BUFFER_START, 0x10000
+.equ BIOS_BUFFER_END, 0x50000
+.equ BIOS_STACK, 0x70000
+.equ BIOS_MIN_CONVENTIONAL_KIB, 512
+.equ BIOS_KERNEL_DEST, 0x100000
+.equ BIOS_IMAGE_BYTES, 1048576

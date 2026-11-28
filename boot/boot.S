@@ -1,3 +1,4 @@
+.include "boot/layout.inc"
 .code16
 .section .text
 .global _start
@@ -10,14 +11,42 @@ _start:
  mov $0x7c00,%sp
  sti
  mov %dl,drive
+ # Check conventional memory before using the bounded bounce buffer.
+ int $0x12
+ cmp $BIOS_MIN_CONVENTIONAL_KIB,%ax
+ jb fail
+ # Require EDD packet reads. No unsupported CHS fallback.
+ mov drive,%dl
+ mov $0x55aa,%bx
+ mov $0x41,%ah
+ int $0x13
+ jc fail
+ cmp $0xaa55,%bx
+ jne fail
+ test $1,%cx
+ jz fail
+ xor %ax,%ax
+ mov %ax,%ds
+ # Read 8 x 32 KiB. No transfer crosses a physical 64 KiB boundary.
+read_chunk:
+ movw $BIOS_READ_SECTORS,dap+2
+ mov drive,%dl
  mov $dap,%si
  mov $0x42,%ah
  int $0x13
  jc fail
+ xor %ax,%ax
+ mov %ax,%ds
+ addw $(BIOS_READ_SECTORS*BIOS_SECTOR_BYTES/16),dap+6
+ addl $BIOS_READ_SECTORS,dap+8
+ cmpw $(BIOS_BUFFER_END/16),dap+6
+ jb read_chunk
  # BIOS E820 map: count at 0x4ff0, entries at 0x5000, 24-byte stride.
  xor %ax,%ax
  mov %ax,%es
  movw $0,0x4ff0
+ movw 0x40e,%ax
+ movw %ax,0x4ff2
  xor %ebx,%ebx
  mov $0x5000,%di
 e820:
@@ -63,11 +92,11 @@ pm:
  mov %ax,%ds
  mov %ax,%es
  mov %ax,%ss
- mov $0x90000,%esp
+ mov $BIOS_STACK,%esp
  cld
- mov $0x10000,%esi
- mov $0x100000,%edi
- mov $8192,%ecx
+ mov $BIOS_BUFFER_START,%esi
+ mov $BIOS_KERNEL_DEST,%edi
+ mov $((BIOS_BUFFER_END-BIOS_BUFFER_START)/4),%ecx
  rep movsl
  # Clear three page-table pages, then identity map first 1 GiB.
  xor %eax,%eax
@@ -103,8 +132,9 @@ lm:
  mov %ax,%ds
  mov %ax,%es
  mov %ax,%ss
- mov $0x70000,%rsp
- mov $0x100000,%rax
+ mov $BIOS_STACK,%rsp
+ xor %edx,%edx
+ mov $BIOS_KERNEL_DEST,%rax
  jmp *%rax
 .align 8
 gdt: .quad 0,0x00cf9a000000ffff,0x00cf92000000ffff,0x00af9a000000ffff
@@ -113,7 +143,7 @@ gdtptr: .word 31
 drive: .byte 0
 .align 4
 dap: .byte 16,0
- .word 64,0,0x1000
+ .word BIOS_READ_SECTORS,0,(BIOS_BUFFER_START/16)
  .quad 1
 .org 510
 .word 0xaa55

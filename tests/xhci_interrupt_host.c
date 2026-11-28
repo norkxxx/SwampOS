@@ -1,0 +1,8 @@
+#include "../drivers/usb/xhci/interrupt.h"
+#include <assert.h>
+#include <stdio.h>
+int main(void){_Alignas(64) struct xhci_trb t[64];struct xhci_interrupt_ring r;struct xhci_interrupt_spec s={31,3,8,1,0x10000};unsigned n;assert(xhci_interrupt_selftest());assert(xhci_interrupt_init(&r,t,&s));
+ assert(!xhci_interrupt_submit(&r,0x10000,8));assert(!xhci_interrupt_submit(&r,0x2fffc,8));assert(!xhci_interrupt_submit(&r,0x20000,9));
+ for(unsigned i=0;i<40000;i++){unsigned head=r.head,cycle=r.cycle,rem=i%9;assert(xhci_interrupt_submit(&r,0x20000,8));assert(!xhci_interrupt_submit(&r,0x20000,8));assert(t[head].lo==0x20000&&t[head].status==8&&t[head].control==(XHCI_TRB_TYPE(1)|32|4|cycle));if(head==62)assert(t[63].control==(XHCI_TRB_TYPE(6)|2|cycle)&&r.head==0&&r.cycle!=cycle);struct xhci_trb e={(uint32_t)r.pending,0,((rem?13u:1u)<<24)|rem,XHCI_TRB_TYPE(32)|(1u<<24)|(31u<<16)};struct xhci_trb port={0,0,0,XHCI_TRB_TYPE(34)};assert(xhci_interrupt_event(&r,&port,&n)==0&&r.state==1);assert(xhci_interrupt_event(&r,&e,&n)==1&&n==8-rem&&!r.state);}
+ for(unsigned i=0;i<8;i++){assert(xhci_interrupt_init(&r,t,&s));assert(xhci_interrupt_submit(&r,0x20000,8));struct xhci_trb e={(uint32_t)r.pending,0,1u<<24,XHCI_TRB_TYPE(32)|(1u<<24)|(31u<<16)};switch(i){case 0:e.lo+=16;break;case 1:e.control^=1u<<24;break;case 2:e.control^=1u<<16;break;case 3:e.control|=4;break;case 4:e.status=6u<<24;break;case 5:e.status=(13u<<24)|9;break;case 6:e.status=(1u<<24)|1;break;case 7:e.status=13u<<24;break;}assert(xhci_interrupt_event(&r,&e,&n)==-1&&r.state==2&&!n);assert(!xhci_interrupt_submit(&r,0x20000,8));}
+ puts("XHCI_INTERRUPT_HOST_OK: 40000 transfers, link/cycle wrap, short IN, malformed completions, bounds and poison");}

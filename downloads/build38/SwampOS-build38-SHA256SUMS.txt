@@ -1,0 +1,3 @@
+e482537509dfe3c4ef8236c1596a7ceecb5b6cd201a5568cd03957fac1e47cca  SwampOS-v0.20.0-dev-build38.zip
+81a091cbc84a03a77a3d418876dbdb1440e598835a1bfe21682a96f8422051ec  SwampOS-Awakens-dev38-Live.iso
+8e8be9194756a883270c3d229bb7ea568d925ee1cefb7fb55bab0e126406b210  SwampOS-Awakens-dev38-Live.iso.report

@@ -11,5 +11,5 @@ SECTIONS {
  .bss : { __bss_start = .; *(.bss*) *(COMMON) __bss_end = .; } :data
  . = ALIGN(4096); __kernel_end = .;
  /DISCARD/ : { *(.eh_frame*) *(.comment*) *(.note*) }
- ASSERT(__kernel_end < 0x400000, "kernel exceeds reserved low memory")
+ ASSERT(__kernel_end < 0x3e0000, "kernel exceeds reserved low memory")
 }

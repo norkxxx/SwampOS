@@ -1,0 +1,13 @@
+#include "enumeration.h"
+static unsigned le16(const uint8_t*p){return (unsigned)p[0]|((unsigned)p[1]<<8);}
+static int ctrl(usb_control_fn f,void*c,unsigned t,unsigned r,unsigned v,unsigned idx,uint8_t*p,size_t n){uint8_t s[8]={(uint8_t)t,(uint8_t)r,(uint8_t)v,(uint8_t)(v>>8),(uint8_t)idx,(uint8_t)(idx>>8),(uint8_t)n,(uint8_t)(n>>8)};size_t actual=0;return f(c,s,p,n,&actual)&&actual==n;}
+int usb_enumerate_boot(usb_control_fn f,void*c,uint8_t*buf,size_t cap,struct usb_enumerated*out){if(!out)return 0;*out=(struct usb_enumerated){0};if(!f||!buf||cap<18)return 0;struct usb_enumerated d={0};if(!ctrl(f,c,0x80,6,0x100,0,buf,18)||buf[0]!=18||buf[1]!=1)return 0;d.bcd_usb=(uint16_t)le16(buf+2);d.ep0_size=buf[7];d.vendor=(uint16_t)le16(buf+8);d.product=(uint16_t)le16(buf+10);unsigned configs=buf[17];if(d.bcd_usb<0x100||d.bcd_usb>=0x300||(d.ep0_size!=8&&d.ep0_size!=16&&d.ep0_size!=32&&d.ep0_size!=64)||!configs||configs>8)return 0;
+ unsigned found=0;for(unsigned i=0;i<configs;i++){if(!ctrl(f,c,0x80,6,0x200|i,0,buf,9)||buf[0]!=9||buf[1]!=2)return 0;unsigned len=le16(buf+2);uint8_t hdr[9];for(unsigned j=0;j<9;j++)hdr[j]=buf[j];if(len<9||len>4096||len>cap)return 0;if(!ctrl(f,c,0x80,6,0x200|i,0,buf,len))return 0;for(unsigned j=0;j<9;j++)if(hdr[j]!=buf[j])return 0;struct usb_boot_config cfg;if(!usb_boot_config_parse(buf,len,&cfg))return 0;/* Narrow profile: all default interfaces must be boot HID. No composite storage. */if(!cfg.count||cfg.count!=buf[4])continue;unsigned endpoints=0;for(unsigned j=0;j<cfg.count;j++){unsigned bit=1u<<(cfg.interfaces[j].endpoint&15);if(endpoints&bit)return 0;endpoints|=bit;}d.config=cfg;found=1;break;}
+ if(!found)return 0;
+ if(!ctrl(f,c,0,9,d.config.configuration,0,0,0))return -1;
+ for(unsigned j=0;j<d.config.count;j++)if(!ctrl(f,c,0x21,0x0b,0,d.config.interfaces[j].number,0,0))return -1;
+ *out=d;return 1;}
+static const uint8_t dev[]={18,1,0,2,0,0,0,64,0x34,0x12,0x78,0x56,0,1,0,0,0,1};
+static const uint8_t config[]={9,2,25,0,1,1,0,0x80,50,9,4,0,0,1,3,1,1,0,7,5,0x81,3,8,0,10};
+static int fake(void*p,const uint8_t s[8],uint8_t*d,size_t n,size_t*a){unsigned*i=p;const uint8_t*src=0;unsigned step=(*i)++;if(step==0&&s[0]==0x80&&s[1]==6&&s[3]==1&&n==18)src=dev;else if((step==1||step==2)&&s[0]==0x80&&s[1]==6&&s[3]==2&&n==(step==1?9:25))src=config;else if(step==3&&s[0]==0&&s[1]==9&&s[2]==1&&!n){}else if(step==4&&s[0]==0x21&&s[1]==0xb&&!s[2]&&!s[4]&&!n){}else return 0;if(src)for(size_t j=0;j<n;j++)d[j]=src[j];*a=n;return 1;}
+int usb_enum_selftest(void){uint8_t buf[64];struct usb_enumerated d;unsigned step=0;return usb_enumerate_boot(fake,&step,buf,sizeof buf,&d)==1&&step==5&&d.vendor==0x1234&&d.config.count==1&&d.config.interfaces[0].endpoint==0x81;}

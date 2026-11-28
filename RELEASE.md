@@ -1,20 +1,27 @@
-# SwampOS v0.5.0 — SwampBox | Boundaries Have Layers
+# THE SWAMP AWAKENS · Build 38
 
-**Experimental pre-release · x86_64 · BIOS · C / Assembly**
+**SWAMP MATRIX // 0.20.0-dev.38**  
+`ITS YOUR SWAMP - ITS YOUR LIFE`
 
-SwampBox is the largest kernel architecture change since Onion: a firmware-aware physical frame allocator, fine-grained paging, distinct address spaces, ring transitions and a minimal default-deny syscall policy. The Donkey scheduler and earlier console capabilities remain.
+Boot the hybrid UEFI ISO to use the ordinary RAM-backed desktop. Launch the storage profile to mount a disposable disk and preserve `/persist/note` across boots. Both native transports passed cold-boot, torn-record and write-denial checks in QEMU/OVMF. The cumulative ZIP contains the sources, historical logs, ISO and lab images.
 
-## Highlights
-- BIOS E820 map, reserved-range filtering, 4 KiB frames, 128 MiB managed-address ceiling.
-- RX kernel text, R/NX constants, RW/NX data; separate user roots, RX code, NX stack and unmapped guard.
-- GDT/TSS, IRETQ entry, interrupt `0x80`, console grants, bounded pointers, fault cleanup and timer watchdog.
-- Nine built-in guest checks; startup fails closed if a check fails.
-- Host stress tests, UBSan, strict QEMU CI gate, new local green SVG artwork and comprehensive English documentation.
+## Build 38 · Persistent storage
 
-## Validation
-Host/static tests pass; QEMU not installed in the packaging environment. Guest enforcement and physical boot remain **unverified**. Do not treat this build as a production sandbox. See TEST-REPORT.md.
+SwampKernel can preserve a note across guest shutdowns on an emulated AHCI disk or NVMe namespace. Mount the disposable volume explicitly, then use the same shell path with either controller. The Live root stays in RAM.
 
-## Assets
-One complete ZIP: source, raw image, ELF, hashes, local SVGs, README, changelog, release notes, profiles, docs and tests. Run `make test` and `make runtime` before relying on the image.
+```sh
+make live-storage-desktop                         # Linux/QEMU GTK, NVMe
+make live-storage-desktop STORAGE_CONTROLLER=ahci # independent AHCI image
+make live-storage-runtime                         # headless persistence and recovery tests
+```
 
-**Security has layers. Now they have boundaries.**
+In SwampOS, enter `persist-mount`, `write /persist/note hello swamp`, then `cat /persist/note`. Close QEMU, repeat the same launch command, mount again and read the file. Each interactive profile keeps its own 4 MiB image under `build/`. [Storage format and limits](docs/PERSISTENCE.md)
+
+## Commit from the integrated checkout
+
+```sh
+git switch -c build/38-persistent-storage
+git add -u
+git add -- kernel tests docs/PERSISTENCE.md
+python3 scripts/check-git-index.py && git commit -m "storage: persist a guest file through AHCI and NVMe"
+```

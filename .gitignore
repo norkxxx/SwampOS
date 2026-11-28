@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pem
+*.swvault
+unlocked.ext4
+core
+
+# Keep only the distributable images and checksums from build/.
+/build/*
+!/build/*.img
+!/build/*.iso
+/build/Farkuad-Live.img
+/build/Farkuad-Live.img.sha256
+!/build/*.ext4
+!/build/IMAGE-SHA256SUMS
+!/build/Farkuad-Live.iso.sha256
+!/build/Farkuad-Live.iso.report
+*.key
+*.p12
+*.pfx
+*.swp
+*.log
+.venv/
