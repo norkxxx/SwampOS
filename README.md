@@ -3,7 +3,7 @@
 <img src="assets/awakens-banner.svg" alt="SwampOS — The Swamp Awakens" width="100%" />
 
 [![Target](https://img.shields.io/badge/target-v0.20.0-315c43?style=for-the-badge)](docs/AWAKENS.md)
-[![Checkpoint](https://img.shields.io/badge/build-38-254c37?style=for-the-badge)](RELEASE.md)
+[![Checkpoint](https://img.shields.io/badge/build-38_r1-254c37?style=for-the-badge)](RELEASE.md)
 [![Arch](https://img.shields.io/badge/arch-x86__64-254c37?style=for-the-badge)](docs/ABI.md)
 [![Live](https://img.shields.io/badge/live-HYBRID_ISO-39714c?style=for-the-badge)](docs/LIVE.md)
 [![Validation](https://img.shields.io/badge/validation-QEMU_OVMF-82734b?style=for-the-badge)](TEST-REPORT.md)
@@ -26,7 +26,9 @@ SwampOS is an independent bare-metal x86_64 operating system project, not a Linu
 > [!IMPORTANT]
 > Build 36 booted from optical and USB media in QEMU/OVMF. Pointer movement, drag and resize were verified from guest framebuffer pixels. VirtualBox and physical display validation remain open. The unsigned Live desktop runs ten kernel-trusted tools and keeps its default workspace in RAM.
 
-## Build 38 · Persistent storage
+## Build 38 revision 1 · Persistent storage
+
+The prebuilt image targets baseline x86-64. Revision 1 also updates the legacy VirtIO queue and the UEFI test profiles. From GitHub, use the two `r1` ZIPs in [downloads/build38](https://github.com/norkxxx/SwampOS/tree/build/38-persistent-storage/downloads/build38).
 
 SwampKernel can preserve a note across guest shutdowns on an emulated AHCI disk or NVMe namespace. Mount the disposable volume explicitly, then use the same shell path with either controller. The Live root stays in RAM.
 
@@ -87,7 +89,7 @@ make live-optical-runtime  # QEMU/OVMF optical boot
              \     -----    /
               '------------'
 
-         SWAMPOS / AWAKENS DEV 38
+         SWAMPOS / AWAKENS DEV 38 R1
        ITS YOUR SWAMP - ITS YOUR LIFE
 
      > 1. Live Desktop (keyboard + PS/2 mouse)

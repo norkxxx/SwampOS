@@ -303,6 +303,39 @@ SwampOS-Farkuad/
   build/logs/build38-original-source-delta.md
   build/logs/build38-ovmf.log
   build/logs/build38-protected-artifacts.txt
+  build/logs/build38-r1-ahci.log
+  build/logs/build38-r1-build.log
+  build/logs/build38-r1-farkuad-optical-guest.log
+  build/logs/build38-r1-farkuad-usb-guest.log
+  build/logs/build38-r1-guests.log
+  build/logs/build38-r1-gui-lab.log
+  build/logs/build38-r1-hashes.log
+  build/logs/build38-r1-host.log
+  build/logs/build38-r1-input.log
+  build/logs/build38-r1-kernel-lab.log
+  build/logs/build38-r1-live.log
+  build/logs/build38-r1-network-lab.log
+  build/logs/build38-r1-nvme.log
+  build/logs/build38-r1-original-source-delta.md
+  build/logs/build38-r1-ovmf.log
+  build/logs/build38-r1-protected-artifacts.txt
+  build/logs/build38-r1-qemu.log
+  build/logs/build38-r1-storage-ahci-cold-boot-serial.log
+  build/logs/build38-r1-storage-ahci-no-iommu-serial.log
+  build/logs/build38-r1-storage-ahci-no-opt-in-serial.log
+  build/logs/build38-r1-storage-ahci-torn-record-serial.log
+  build/logs/build38-r1-storage-ahci-write-serial.log
+  build/logs/build38-r1-storage-ahci-wrong-label-serial.log
+  build/logs/build38-r1-storage-ahci-wrong-serial-serial.log
+  build/logs/build38-r1-storage-lab.log
+  build/logs/build38-r1-storage-nvme-cold-boot-serial.log
+  build/logs/build38-r1-storage-nvme-no-iommu-serial.log
+  build/logs/build38-r1-storage-nvme-no-opt-in-serial.log
+  build/logs/build38-r1-storage-nvme-torn-record-serial.log
+  build/logs/build38-r1-storage-nvme-write-serial.log
+  build/logs/build38-r1-storage-nvme-wrong-label-serial.log
+  build/logs/build38-r1-storage-nvme-wrong-serial-serial.log
+  build/logs/build38-r1-usb-pair-serial.log
   build/logs/build38-regression.log
   build/logs/build38-storage-ahci-cold-boot-serial.log
   build/logs/build38-storage-ahci-no-iommu-serial.log
@@ -617,6 +650,7 @@ SwampOS-Farkuad/
   legacy/swampbox/README.md
   legacy/swampbox/RELEASE.md
   legacy/swampbox/SECURITY.md
+  legacy/swampbox/SwampOS-from-git.img.gz
   legacy/swampbox/TEST-REPORT.md
   legacy/swampbox/TESTING.md
   legacy/swampbox/banner.svg

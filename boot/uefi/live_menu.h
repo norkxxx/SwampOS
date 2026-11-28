@@ -24,7 +24,7 @@ static inline void menu_draw(system_table*s,unsigned selected,unsigned seconds){
  "             \\     -----    /\r\n"
  "              '------------'\r\n"
  "\r\n"
- "         SWAMPOS / AWAKENS DEV 38\r\n"
+ "         SWAMPOS / AWAKENS DEV 38 R1\r\n"
  "       ITS YOUR SWAMP - ITS YOUR LIFE\r\n\r\n"));
  static const ch16 *const opts[]={S("1. Live Desktop (keyboard + PS/2 mouse)"),S("2. Classic Desktop (keyboard only)"),S("3. Serial recovery console (COM1)"),S("4. Return to firmware")};
  for(unsigned i=0;i<4;i++){say(s,i==selected?S("     > "):S("       "));say(s,opts[i]);say(s,S("\r\n"));}

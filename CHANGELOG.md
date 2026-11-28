@@ -1,3 +1,11 @@
+## Build 38 revision 1 · GitHub runner compatibility
+
+- Target the baseline x86-64 ISA explicitly when building the freestanding kernel. This keeps newer Linux compiler defaults from emitting BMI2 instructions for the baseline guest CPU.
+- Accept legacy VirtIO rings with up to 1,024 descriptors while keeping the receive buffer pool bounded at 256 packets.
+- Run the kernel and GUI labs with a Secure Boot capable OVMF image and blank variables. The GUI lab reads QMP through private FIFOs.
+- Preserve the prior Git BIOS image losslessly at `legacy/swampbox/SwampOS-from-git.img.gz`. Building regenerates the current BIOS lab image.
+- Run the 14 AHCI/NVMe guest scenarios in GitHub Actions.
+
 ## Build 38 · Persistent storage
 
 Added Q35 AHCI and NVMe drivers, firmware resource revalidation, bounded I/O under VT-d and the two-slot note volume. Added independent cold-boot, corrupt-sector and denial tests on both transports. The read-only Live root and protected boot chain are retained.

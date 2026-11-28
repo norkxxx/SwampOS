@@ -4,9 +4,9 @@ Keep the original Farkuad 0.13.1 ISO available as a fallback. Attach `build/Fark
 
 | Test | Expected outcome |
 |---|---|
-| UEFI menu | ASCII ogre, exact slogan, AWAKENS DEV 38, ten-second timeout |
+| UEFI menu | ASCII ogre, exact slogan, AWAKENS DEV 38 R1, ten-second timeout |
 | Default Live boot | Windowed Terminal and taskbar |
-| Keyboard | Type `version`, Enter; reports 0.20.0-dev.38 |
+| Keyboard | Type `version`, Enter; reports 0.20.0-dev.38-r1 |
 | History | Execute `help`, `version`; Up/Down recalls commands; typing a draft then Up/Down restores it |
 | Mouse | Drag and resize Notes; minimize, restore, maximize and close |
 | Cursor damage | Move PS/2 quickly over Notes and the taskbar. Check for full-screen flashes and cursor trails, including after drag and resize. Record VirtualBox display adapter, resolution and scaling. |

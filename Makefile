@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -m64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2
+CFLAGS = -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -fno-unwind-tables -ffreestanding -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wall -Wextra -Werror -O2
 SRC := $(wildcard kernel/*.c) $(wildcard kernel/*.S)
 OBJ := $(patsubst kernel/%.c,build/%.o,$(filter %.c,$(SRC))) $(patsubst kernel/%.S,build/%.o,$(filter %.S,$(SRC))) build/live-surface.o build/window.o build/compositor.o build/ramfs-store.o build/desktop-tools.o
 .PHONY: all run test runtime clean
@@ -9,9 +9,9 @@ build:
 build/boot.bin: boot/boot.S boot/layout.inc | build
 	as --32 $< -o build/boot.o
 	ld -m elf_i386 -Ttext 0x7c00 --oformat binary build/boot.o -o $@
-build/%.o: kernel/%.c $(wildcard kernel/*.h) | build
+build/%.o: kernel/%.c $(wildcard kernel/*.h) Makefile | build
 	$(CC) $(CFLAGS) -c $< -o $@
-build/%.o: kernel/%.S $(wildcard kernel/*.h) | build
+build/%.o: kernel/%.S $(wildcard kernel/*.h) Makefile | build
 	$(CC) $(CFLAGS) -c $< -o $@
 build/kernel.elf: $(OBJ) linker.ld
 	ld -m elf_x86_64 -T linker.ld $(OBJ) -o $@

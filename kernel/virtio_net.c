@@ -7,8 +7,9 @@
  * Explicit finite lab session, no application or Internet path. */
 #define HDR 10u
 #define BUF 1536u
+#define RX_BUFFERS 256u
 static _Alignas(4096) uint8_t rx_ring[VQ_BYTES],tx_ring[VQ_BYTES];
-static _Alignas(16) uint8_t rx_buf[VQ_MAX][BUF],tx_buf[BUF];
+static _Alignas(16) uint8_t rx_buf[RX_BUFFERS][BUF],tx_buf[BUF];
 static struct vq rx,tx;
 static struct pci_function dev;
 static uint16_t io,oldcmd;
@@ -35,10 +36,10 @@ static int start(void){if(reset_failed||!emulator())return 0;found=0;pci_scan(pc
  unsigned nz=0;for(unsigned i=0;i<6;i++)nz|=ep.mac[i];if(!nz||(ep.mac[0]&1))goto fail;
  ep.ip[0]=192;ep.ip[1]=0;ep.ip[2]=2;ep.ip[3]=1;
  if(!setup(&rx,0,rx_ring)||!setup(&tx,1,tx_ring))goto fail;
- for(uint16_t i=0;i<rx.n;i++){vq_desc_set(&rx,i,(uintptr_t)rx_buf[i],BUF,2);if(!vq_submit(&rx,i))goto fail;}stats=(struct net_stats){0};busy=0;
+ for(uint16_t i=0;i<rx.n && i<RX_BUFFERS;i++){vq_desc_set(&rx,i,(uintptr_t)rx_buf[i],BUF,2);if(!vq_submit(&rx,i))goto fail;}stats=(struct net_stats){0};busy=0;
  cmd(oldcmd|1|4|0x400);out8(io+18,7);if(in8(io+18)!=7)goto fail;out16(io+16,0);return 1;
  fail:stop();return 0;}
-static int poll(void){struct vq_used u;int rc=vq_pop(&tx,&u);if(rc<0||(rc&&(!busy||u.id||u.len)))return 0;if(rc)busy=0;rc=vq_pop(&rx,&u);if(rc<0)return 0;if(!rc)return 1;if(u.len>BUF||u.len<HDR)return 0;uint8_t*b=rx_buf[u.id];/* With no offloads, header flags and GSO type must be zero. */
+static int poll(void){struct vq_used u;int rc=vq_pop(&tx,&u);if(rc<0||(rc&&(!busy||u.id||u.len)))return 0;if(rc)busy=0;rc=vq_pop(&rx,&u);if(rc<0)return 0;if(!rc)return 1;if(u.id>=RX_BUFFERS||u.len>BUF||u.len<HDR)return 0;uint8_t*b=rx_buf[u.id];/* With no offloads, header flags and GSO type must be zero. */
  if(!busy&&!b[0]&&!b[1]){size_t n=net_receive(&ep,b+HDR,u.len-HDR,tx_buf+HDR,BUF-HDR,&stats);if(n){for(unsigned i=0;i<HDR;i++)tx_buf[i]=0;while(n<60)tx_buf[HDR+n++]=0;vq_desc_set(&tx,0,(uintptr_t)tx_buf,(uint32_t)(n+HDR),0);if(!vq_submit(&tx,0))return 0;busy=1;out16(io+16,1);}}
  if(!vq_submit(&rx,(uint16_t)u.id)){return 0;}out16(io+16,0);return 1;}
 int netlab_command(const char*s){if(!eq(s,"netlab"))return 0;if(!start()){say("NETLAB_UNAVAILABLE\n");return 1;}say("NETLAB_READY 192.0.2.1 (10s trusted VM only)\n");uint64_t t=ticks();int ok=1;for(unsigned long i=0;i<50000000ul&&ticks()-t<1000;i++){if(!poll()){ok=0;break;}__asm__ volatile("pause");}stop();say(ok?"NETLAB_STOP replies=":"NETLAB_DEVICE_ERROR replies=");console_number(stats.replies);say("\n");return 1;}

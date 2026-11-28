@@ -1,5 +1,5 @@
 """OVMF GOP integration gate: compare actual guest framebuffer to host renderer."""
-import json,shutil,socket,subprocess,tempfile,time
+import errno,json,os,select,shutil,subprocess,tempfile,time
 from pathlib import Path
 from ovmf_config import drives
 q=shutil.which('qemu-system-x86_64')
@@ -14,25 +14,36 @@ def ppm(path):
 
 expected=ppm('build/gui-preview.ppm'); assert expected[:2]==(640,360)
 with tempfile.TemporaryDirectory() as td:
-    sock=Path(td)/'qmp'; shot=Path(td)/'screen.ppm'
-    cmd=[q,'-machine','q35','-m','256M',*drives('gui-lab-vars.fd'),'-drive','format=raw,file=build/GuiLab-GPT.img,snapshot=on','-nic','none','-display','none','-vga','std','-serial','none','-monitor','none','-qmp',f'unix:{sock},server=on,wait=off','-no-reboot']
+    qmp=Path(td)/'qmp'; shot=Path(td)/'screen.ppm'
+    for suffix in ('.in','.out'):os.mkfifo(str(qmp)+suffix)
+    cmd=[q,'-machine','q35,smm=on','-m','256M',*drives('gui-lab-vars.fd',explicit_secure_boot=True),'-drive','format=raw,file=build/GuiLab-GPT.img,snapshot=on','-nic','none','-display','none','-vga','std','-serial','none','-monitor','none','-qmp',f'pipe:{qmp}','-no-reboot']
+    write = None
     with open('build/gui-lab.log','wb') as log, subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT) as p:
         try:
             end=time.monotonic()+60
-            while not sock.exists():
-                if p.poll() is not None or time.monotonic()>end: raise RuntimeError('QMP unavailable')
-                time.sleep(.1)
-            with socket.socket(socket.AF_UNIX) as s:
-                s.settimeout(5);s.connect(str(sock));f=s.makefile('rwb')
-                assert 'QMP' in json.loads(f.readline())
+            read=os.open(str(qmp)+'.out',os.O_RDONLY|os.O_NONBLOCK)
+            with os.fdopen(read,'rb',buffering=0) as receive:
+                while True:
+                    try:
+                        write=os.open(str(qmp)+'.in',os.O_WRONLY|os.O_NONBLOCK)
+                        break
+                    except OSError as exc:
+                        if exc.errno!=errno.ENXIO or p.poll() is not None or time.monotonic()>end:
+                            raise RuntimeError('QMP unavailable') from exc
+                        time.sleep(.05)
+                os.set_blocking(read,True)
+                def response():
+                    if not select.select([receive],[],[],5)[0]:raise RuntimeError('QMP timeout')
+                    line=receive.readline()
+                    if not line:raise RuntimeError('QMP closed')
+                    return json.loads(line)
+                assert 'QMP' in response()
                 def command(name,args=None):
                     msg={'execute':name}
                     if args:msg['arguments']=args
-                    f.write(json.dumps(msg).encode()+b'\n');f.flush()
+                    os.write(write,json.dumps(msg).encode()+b'\n')
                     while True:
-                        line=f.readline()
-                        if not line:raise RuntimeError('QMP closed')
-                        obj=json.loads(line)
+                        obj=response()
                         if 'error' in obj:raise RuntimeError(str(obj['error']))
                         if 'return' in obj:return obj['return']
                 command('qmp_capabilities')
@@ -47,4 +58,5 @@ with tempfile.TemporaryDirectory() as td:
                     time.sleep(.5)
                 else:raise RuntimeError('GUI framebuffer mismatch or boot timeout')
         finally:
+            if write is not None:os.close(write)
             p.kill();p.wait()

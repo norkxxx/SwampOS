@@ -45,4 +45,4 @@ Build 01–38 are cumulative development checkpoints for target 0.20.0, not sepa
 | 37 | Native USB keyboard and mouse with per-device VT-d translation on Q35 |
 | 38 | AHCI and NVMe, persistent note and cold-boot recovery |
 
-Build 31 archive packaging was corrected to restore missing historical logs. Build 38 is the current source checkpoint. The Build 35 migration materials remain the historical baseline.
+Build 31 archive packaging was corrected to restore missing historical logs. Build 38 revision 1 is the current source checkpoint. The Build 35 migration materials remain the historical baseline.

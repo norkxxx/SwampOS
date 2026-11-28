@@ -47,6 +47,8 @@ make runtime    # mandatory guest gate; fails if QEMU is missing
 make run        # interactive serial shell
 ```
 
+The original Git BIOS image is preserved here as `SwampOS-from-git.img.gz`. Decompress it to obtain the historical image.
+
 The archive contains `build/SwampOS.img` (1 MiB raw BIOS image) and `build/kernel.elf` (debug/symbol inspection). To boot without rebuilding:
 
 ```bash

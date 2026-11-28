@@ -2,7 +2,7 @@
 
 ## Mission and current baseline
 - Independent bare-metal x86_64 OS with its own C/assembly kernel and UEFI loader, not a Linux distribution. Preserve the existing implementation and architecture; do not restart from scratch.
-- Current source checkpoint: `0.20.0-dev.38` (THE SWAMP AWAKENS). Farkuad 0.13.1 is the user-confirmed VirtualBox fallback. Build 36 validates the retained scene and cursor in QEMU/OVMF. Build 37 drives a USB keyboard and mouse in one opt-in Q35/VT-d guest. Build 38 persists one VFS file through native AHCI and NVMe on disposable Q35 disks. Next milestone is SwampGuard and user processes. VirtualBox display sign-off remains open. Target 0.20.0, longer-term stable 1.0.0.
+- Current source checkpoint: `0.20.0-dev.38-r1` (THE SWAMP AWAKENS). Farkuad 0.13.1 is the user-confirmed VirtualBox fallback. Build 36 validates the retained scene and cursor in QEMU/OVMF. Build 37 drives a USB keyboard and mouse in one opt-in Q35/VT-d guest. Build 38 persists one VFS file through native AHCI and NVMe on disposable Q35 disks. Next milestone is SwampGuard and user processes. VirtualBox display sign-off remains open. Target 0.20.0, longer-term stable 1.0.0.
 - Read `CODEX-HANDOFF.md`, `KNOWN-BUGS.md`, `ROADMAP.md`, `BUILD-HISTORY.md`, existing `HANDOFF.md`, `FEATURES.md`, `MISSING.md`, `TEST-REPORT.md`, `README.md`, and relevant source before editing. The repository and real test evidence take precedence over old conversational claims. Treat roadmap as proposed, not implemented.
 
 ## Engineering workflow

@@ -1,6 +1,6 @@
 # SwampOS engineering handoff
 
-## Current checkpoint · 0.20.0-dev.38
+## Current checkpoint · 0.20.0-dev.38-r1
 
 The AHCI and NVMe profiles mount one fixed file, `/persist/note`, through the block/VFS layer. Both transports survived an abrupt QEMU shutdown and recovered the preceding revision after on-disk corruption. The cumulative ZIP retains prior build contents. Read docs/PERSISTENCE.md, TEST-REPORT.md and the guest logs.
 

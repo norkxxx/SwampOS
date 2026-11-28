@@ -2,7 +2,7 @@
 
 The newest cumulative ZIP is the only required working source; keep Farkuad 0.13.1 separately as the verified fallback. Do not publish intermediate builds as finished releases. Retain all original source/doc paths, compare against the original ZIP using `scripts/checkpoint-report.py`, and run `make test` plus `make checksums` before packaging. Include the hybrid ISO, styled English README, banners, RELEASE.md, CHANGELOG.md, FEATURES.md, MISSING.md, DIFF-REPORT.md, TREE.txt and test logs. Use Git LFS and give a commit command at the end of each report.
 
-## Current checkpoint · 0.20.0-dev.38
+## Current checkpoint · 0.20.0-dev.38-r1
 
 The AHCI and NVMe profiles mount one fixed file, `/persist/note`, through the block/VFS layer. Both transports survived an abrupt QEMU shutdown and recovered the preceding revision after on-disk corruption. The cumulative ZIP retains prior build contents. Read docs/PERSISTENCE.md, TEST-REPORT.md and the guest logs.
 

@@ -1,6 +1,6 @@
-# THE SWAMP AWAKENS · Build 38
+# THE SWAMP AWAKENS · Build 38 revision 1
 
-**SWAMP MATRIX // 0.20.0-dev.38**  
+**SWAMP MATRIX // 0.20.0-dev.38-r1**  
 `ITS YOUR SWAMP - ITS YOUR LIFE`
 
 Boot the hybrid UEFI ISO to use the ordinary RAM-backed desktop. Launch the storage profile to mount a disposable disk and preserve `/persist/note` across boots. Both native transports passed cold-boot, torn-record and write-denial checks in QEMU/OVMF. The cumulative ZIP contains the sources, historical logs, ISO and lab images.

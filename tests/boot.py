@@ -4,7 +4,7 @@ from pathlib import Path
 qemu=shutil.which('qemu-system-x86_64')
 if not qemu:
     raise SystemExit('NOT RUN: qemu-system-x86_64 is not installed')
-cmd=[qemu,'-machine','pc','-cpu','qemu64','-m','128M','-drive','if=ide,index=0,format=raw,file=build/SwampOS.img','-drive','if=ide,index=2,format=raw,file=build/vault.ext4,snapshot=on','-nic','none','-display','none','-serial','stdio','-monitor','none','-no-reboot','-no-shutdown']
+cmd=[qemu,'-machine','pc','-cpu','qemu64','-m','128M','-drive','if=ide,index=0,format=raw,file=build/SwampOS.img,snapshot=on','-drive','if=ide,index=2,format=raw,file=build/vault.ext4,snapshot=on','-nic','none','-display','none','-serial','stdio','-monitor','none','-no-reboot','-no-shutdown']
 log=bytearray()
 with subprocess.Popen(cmd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.STDOUT) as p:
     def until(marker, start=0, timeout=25):

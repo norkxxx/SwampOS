@@ -1,6 +1,6 @@
-# Build 38 verification
+# Build 38 revision 1 verification
 
-The x64 hybrid UEFI Live ISO contains 44,980,224 bytes. SHA-256 `81a091cbc84a03a77a3d418876dbdb1440e598835a1bfe21682a96f8422051ec`. Component sizes are in `build/Farkuad-Live.iso.report`.
+The x64 hybrid UEFI Live ISO contains 44,980,224 bytes. SHA-256 `2558f4083259eada94a59bf9a7243f62888f2b2cc021987a193854ad53dc641d`. Component sizes are in `build/Farkuad-Live.iso.report`.
 
 | Gate | Evidence |
 |---|---|
@@ -11,7 +11,7 @@ The x64 hybrid UEFI Live ISO contains 44,980,224 bytes. SHA-256 `81a091cbc84a03a
 | Regression | Aggregate host tests, optical and USB-media Live boots, locked UEFI manager and paired xHCI input passed. |
 | Packaging | Retained historical archive paths and logs. Protected EFI and GPT hashes matched Build 37. The extracted component and deliverable SHA-256 manifests matched. |
 
-Guest logs and command transcripts are in `build/logs/build38-*`. The automated tests used headless QEMU. Physical hardware, VirtualBox storage and the GTK storage launcher window were not tested.
+Revision 1 adds host coverage for a 1,024-entry VirtIO split ring. The guest exchanged ARP and ICMP packets over an isolated QEMU link, then shut the device down. The BIOS shell, UEFI kernel lab, protected manager, storage lab, GUI framebuffer, Live desktop and USB pair also passed locally. Revision 1 logs use the prefix `build/logs/build38-r1-`. The original Build 38 logs remain in the archive. The automated tests used headless QEMU. Physical hardware, VirtualBox storage and the GTK storage launcher window were not tested.
 
 ## Commit from the integrated checkout
 
