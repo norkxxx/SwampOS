@@ -16,7 +16,7 @@ static int write_one(void *ctx,unsigned lba,const void *data) {
 }
 static int flush(void *ctx) { return !((struct disk *)ctx)->bad_flush; }
 static void seed(struct disk *d,unsigned slot,uint64_t generation) {
-    struct note_record r={.magic="SWPNOTE1",.generation=generation};
+    struct note_record r={.magic={'S','W','P','N','O','T','E','1'},.generation=generation};
     const uint8_t *p=(const void *)&r;
     uint32_t crc=~0u;
     for(unsigned i=0;i<508;i++) {

@@ -26,6 +26,7 @@ jobs:
         if: always()
       - run: make live-optical-runtime
         if: always()
+      - run: make live-storage-runtime
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,5 +59,6 @@ jobs:
             build/Farkuad-Live.iso
             build/FARKUAD.EFI
             build/Farkuad-Live.iso.sha256
+            build/storage-*-serial.log
             build/farkuad-*-guest.log
             build/farkuad-*-guest-*.ppm

@@ -33,7 +33,7 @@ int vfs_note_mount(struct note_volume *v, const struct blockdev *disk,
 
 int vfs_note_write(struct note_volume *v,const char *data,size_t n) {
     if (!v || !v->slot || !data) return 0;
-    struct note_record next={.magic="SWPNOTE1",.generation=v->current.generation+1};
+    struct note_record next={.magic={'S','W','P','N','O','T','E','1'},.generation=v->current.generation+1};
     if (!next.generation || n>sizeof next.data) return 0;
     for (unsigned i=0;i<n;i++) {
         if ((unsigned char)data[i]<32 || (unsigned char)data[i]>126) return 0;
